@@ -24,12 +24,18 @@ service EmployeeService {
   // List all employees
   rpc ListAllEmployees (EmptyMessage) returns (EmployeeDataList) {}
   
+  // Set an employee´s salary
+  rpc SetEmployeeSalary (EmployeeSalary) returns (StatusReply) {}
+
+  // Get an employee´s salary
+  rpc GetEmployeeSalaryFromID (EmployeeID) returns (EmployeeSalary) {}
 }
 
 message EmployeeData {
   uint32 id = 1;
   string name = 2;
   string title = 3;
+  string salary = 4;
 }
 
 message StatusReply {
@@ -49,4 +55,8 @@ message EmptyMessage{}
 
 message EmployeeDataList{
   repeated EmployeeData employee_data = 1;
+}
+
+message EmployeeSalary {
+  string salary = 1;
 }

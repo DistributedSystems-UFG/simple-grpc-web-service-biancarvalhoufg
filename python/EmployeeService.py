@@ -25,6 +25,7 @@ class EmployeeServer(EmployeeService_pb2_grpc.EmployeeServiceServicer):
     'id':request.id,
     'name':request.name,
     'title':request.title
+    'salary':request.salary
     }
     empDB.append(dat)
     return EmployeeService_pb2.StatusReply(status='OK')
@@ -52,6 +53,15 @@ class EmployeeServer(EmployeeService_pb2_grpc.EmployeeServiceServicer):
       emp_data = EmployeeService_pb2.EmployeeData(id=item['id'], name=item['name'], title=item['title']) 
       list.employee_data.append(emp_data)
     return list
+
+  def SetEmployeeSalary(self, request, context):
+    usr = [ emp for emp in empDB if (emp['id'] == request.id) ]
+    usr[0]['salary'] = request.salary
+    return EmployeeService_pb2.StatusReply(status='OK')
+
+  def GetEmployeeSalaryFromID(self, request, context):
+    usr = [ emp for emp in empDB if (emp['id'] == request.id) ]
+    return EmployeeService_pb2.EmployeeSalary(id=usr[0]['salary'])
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
